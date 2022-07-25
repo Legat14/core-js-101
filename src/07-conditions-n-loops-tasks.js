@@ -76,8 +76,13 @@ function getFactorial(n) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  // throw new Error('Not implemented');
+  let result = 0;
+  for (let i = n1; i <= n2; i += 1) {
+    result += i;
+  }
+  return result;
 }
 
 
@@ -96,8 +101,18 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  // throw new Error('Not implemented');
+  if (a >= b + c) {
+    return false;
+  }
+  if (b >= a + c) {
+    return false;
+  }
+  if (c >= a + b) {
+    return false;
+  }
+  return true;
 }
 
 
@@ -164,8 +179,9 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  // throw new Error('Not implemented');
+  return (circle.center.x - point.x) ** 2 + (circle.center.y - point.y) ** 2 < circle.radius ** 2;
 }
 
 
@@ -180,8 +196,25 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  // throw new Error('Not implemented');
+  let result = null;
+  for (let i = 0; i < str.length; i += 1) {
+    if (!result) {
+      let countOfLetter = 0;
+      for (let j = 0; j < str.length; j += 1) {
+        result = str[i];
+        if (str[i] === str[j]) {
+          countOfLetter += 1;
+        }
+        if (countOfLetter > 1) {
+          result = null;
+          break;
+        }
+      }
+    } else break;
+  }
+  return result;
 }
 
 
@@ -207,8 +240,25 @@ function findFirstSingleChar(/* str */) {
  *   5, 3, true, true   => '[3, 5]'
  *
  */
-function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
-  throw new Error('Not implemented');
+function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
+  // throw new Error('Not implemented');
+  let result = '';
+  if (isStartIncluded) {
+    result = '[';
+  } else {
+    result = '(';
+  }
+  if (a < b) {
+    result += `${a}, ${b}`;
+  } else {
+    result += `${b}, ${a}`;
+  }
+  if (isEndIncluded) {
+    result += ']';
+  } else {
+    result += ')';
+  }
+  return result;
 }
 
 
@@ -224,8 +274,9 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  // throw new Error('Not implemented');
+  return str.split('').reverse().join('');
 }
 
 
@@ -241,8 +292,9 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  // throw new Error('Not implemented');
+  return +num.toString().split('').reverse().join('');
 }
 
 
@@ -266,8 +318,33 @@ function reverseInteger(/* num */) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  // throw new Error('Not implemented');
+  const strNumber = ccn.toString();
+  const testDigit = +strNumber[strNumber.length - 1];
+  const questioningNumber = strNumber.substring(0, strNumber.length - 1);
+  let controlSum = 0;
+  const lastNumberIsOod = (questioningNumber.length - 1) % 2 === 0;
+  for (let i = questioningNumber.length - 1; i >= 0; i -= 1) {
+    let digit = +questioningNumber[i];
+    if (lastNumberIsOod) {
+      if (i % 2 === 0) {
+        digit *= 2;
+      }
+    } else if (i % 2 !== 0) {
+      digit *= 2;
+    }
+    if (digit > 9) {
+      controlSum += +(digit.toString()[0]) + (+(digit.toString()[1]));
+    } else {
+      controlSum += digit;
+    }
+  }
+  let mod = 10 - (controlSum % 10);
+  if (mod === 10) {
+    mod = 0;
+  }
+  return mod === testDigit;
 }
 
 /**
@@ -284,8 +361,19 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  // throw new Error('Not implemented');
+  function recursive(strNum) {
+    if (+strNum <= 9) {
+      return +strNum;
+    }
+    let sum = 0;
+    for (let i = 0; i < strNum.length; i += 1) {
+      sum += +strNum[i];
+    }
+    return recursive(sum.toString());
+  }
+  return recursive(num.toString());
 }
 
 
@@ -310,8 +398,21 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  // throw new Error('Not implemented');
+  let string = str;
+  let isChange = true;
+  while (isChange) {
+    const compearStr = string;
+    string = string.replace('[]', '');
+    string = string.replace('{}', '');
+    string = string.replace('()', '');
+    string = string.replace('<>', '');
+    if (compearStr === string) {
+      isChange = false;
+    }
+  }
+  return !string;
 }
 
 
@@ -335,8 +436,9 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  // throw new Error('Not implemented');
+  return num.toString(n);
 }
 
 
@@ -354,6 +456,22 @@ function toNaryString(/* num, n */) {
  */
 function getCommonDirectoryPath(/* pathes */) {
   throw new Error('Not implemented');
+  // const firstAddresArr = pathes[0].split('');
+  // let commonAddres = '';
+  // firstAddresArr.forEach((part, index) => {
+  //   let isCommon = true;
+  //   pathes.forEach((addres) => {
+  //     const addresArr = addres.split('');
+  //     console.log(addresArr[index], part);
+  //     if (addresArr[index] !== part) {
+  //       isCommon = false;
+  //     }
+  //   });
+  //   if (isCommon) {
+  //     commonAddres += part;
+  //   }
+  // });
+  // return commonAddres;
 }
 
 
